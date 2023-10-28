@@ -3,9 +3,7 @@ import json
 from quart import Blueprint, Response, request
 from payment.models.modelsClass import PaymentModel
 
-
 postpaymentb = Blueprint('post_payment', __name__,)
-
 
 def validate_body(body):
     try:
@@ -19,25 +17,13 @@ def validate_body(body):
 
     return body, errors
 
-
-@postpaymentb.route('/api/v1/payment/', methods=['POST'])
+@postpaymentb.route('/api/v1/payment', methods=['POST'])
 async def post_payment() -> Response:
     body, errors = validate_body(await request.body)
+    
     if len(errors) > 0:
-        return Response(
-            status=400,
-            content_type='application/json',
-            response=json.dumps(errors)
-        )
+        return Response(status=400, content_type='application/json', response=json.dumps(errors))
 
-    payment = PaymentModel.create(
-        payment_uid=uuid.uuid4(),
-        price=body['price'],
-        status='PAID'
-    )
+    payment = PaymentModel.create(payment_uid=uuid.uuid4(), price=body['price'], status='PAID')
 
-    return Response(
-        status=200,
-        content_type='application/json',
-        response=json.dumps(payment.to_dict())
-    )
+    return Response(status=200, content_type='application/json', response=json.dumps(payment.to_dict()))
