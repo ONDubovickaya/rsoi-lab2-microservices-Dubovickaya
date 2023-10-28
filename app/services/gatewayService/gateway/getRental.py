@@ -19,7 +19,7 @@ async def get_rental(rentalUid: str) -> Response:
     if 'X-User-Name' not in request.headers.keys():
         return Response(status=400, content_type='application/json', response=json.dumps({'errors': ['wrong user name']}))
 
-    response = get_data_from_service('http://' + os.environ['RENTAL_SERVICE_HOST'] + ':' + os.environ['RENTAL_SERVICE_PORT'] + '/api/v1/rental/'+rentalUid, timeout=5, headers={'X-User-Name': request.headers['X-User-Name']})
+    response = get_data_from_service('http://' + os.environ['RENTAL_SERVICE_HOST'] + ':' + os.environ['RENTAL_SERVICE_PORT'] + '/api/v1/rental/'+ rentalUid, timeout=5, headers={'X-User-Name': request.headers['X-User-Name']})
     if response is None:
         return Response(status=500, content_type='application/json', response=json.dumps({'errors': ['service not working']}))
 
