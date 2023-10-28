@@ -4,9 +4,7 @@ import uuid
 from quart import Blueprint, Response, request
 from rental.models.modelsClass import RentalModel
 
-
 postrentalb = Blueprint('post_rental', __name__,)
-
 
 def validate_body(body):
     try:
@@ -15,35 +13,22 @@ def validate_body(body):
         return None, ['wrong']
 
     errors = []
-    if 'carUid' not in body or type(body['carUid']) is not str or\
-            'dateFrom' not in body or type(body['dateFrom']) is not str or\
-            'dateTo' not in body or type(body['dateTo']) is not str or\
-            'paymentUid' not in body or type(body['paymentUid']) is not str:
+    
+    if ('carUid' not in body or type(body['carUid']) is not str) or ('dateFrom' not in body or type(body['dateFrom']) is not str) or ('dateTo' not in body or type(body['dateTo']) is not str) or ('paymentUid' not in body or type(body['paymentUid']) is not str):
         return None, ['Bad structure body!']
 
     return body, errors
 
-
-@postrentalb.route('/api/v1/rental/', methods=['POST'])
+@postrentalb.route('/api/v1/rental', methods=['POST'])
 async def post_rental() -> Response:
     if 'X-User-Name' not in request.headers.keys():
-        return Response(
-            status=400,
-            content_type='application/json',
-            response=json.dumps({
-                'errors': ['User name not found']
-            })
-        )
+        return Response(status=400, content_type='application/json', response=json.dumps({'errors': ['User name not found']}))
 
     user = request.headers['X-User-Name']
 
     body, errors = validate_body(await request.body)
     if len(errors) > 0:
-        return Response(
-            status=400,
-            content_type='application/json',
-            response=json.dumps(errors)
-        )
+        return Response(status=400, content_type='application/json', response=json.dumps(errors))
 
     rental = RentalModel.create(
         rental_uid=uuid.uuid4(),
@@ -55,8 +40,4 @@ async def post_rental() -> Response:
         status='IN_PROGRESS'
     )
 
-    return Response(
-        status=200,
-        content_type='application/json',
-        response=json.dumps(rental.to_dict())
-    )
+    return Response(status=200, content_type='application/json', response=json.dumps(rental.to_dict()))
