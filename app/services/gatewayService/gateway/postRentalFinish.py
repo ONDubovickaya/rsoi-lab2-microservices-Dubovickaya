@@ -8,7 +8,7 @@ postrentalbf = Blueprint('post_rental_finish', __name__, )
 
 @postrentalbf.route('/api/v1/rental/<string:rentalUid>/finish', methods=['POST'])
 async def post_rental_finish(rentalUid: str) -> Response:
-    response = post_data_from_service('http://' + os.environ['RENTAL_SERVICE_HOST'] + ':' + os.environ['RENTAL_SERVICE_PORT'] + '/api/v1/rental/'+rentalUid+'/finish', timeout=5)
+    response = post_data_from_service('http://' + os.environ['RENTAL_SERVICE_HOST'] + ':' + os.environ['RENTAL_SERVICE_PORT'] + '/api/v1/rental/' + rentalUid + '/finish', timeout=5)
 
     if response is None:
         return Response(status=500, content_type='application/json', response=json.dumps({'errors': ['service not working']}))
