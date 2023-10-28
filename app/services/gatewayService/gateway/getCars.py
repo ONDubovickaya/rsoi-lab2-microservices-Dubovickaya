@@ -6,7 +6,7 @@ from .serviceOrders import get_data_from_service
 
 getcarsb = Blueprint('get_cars', __name__, )
 
-@getcarsb.route('/api/v1/cars/', methods=['GET'])
+@getcarsb.route('/api/v1/cars', methods=['GET'])
 async def get_cars() -> Response:
     response = get_data_from_service('http://' + os.environ['CARS_SERVICE_HOST'] + ':' + os.environ['CARS_SERVICE_PORT'] + '/' + 'api/v1/cars?' + request.full_path.split('?')[-1], timeout=5)
     
