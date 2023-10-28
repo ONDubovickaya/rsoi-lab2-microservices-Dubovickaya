@@ -43,7 +43,6 @@ def validate_args(args):
 
     return page, size, show_all, errors
 
-
 @getcarsb.route('/api/v1/cars/', methods=['GET'])
 async def get_cars() -> Response:
     page, size, show_all, errors = validate_args(request.args)
