@@ -15,7 +15,7 @@ def car_simplify(car: dict) -> dict:
     }
 
 
-@getrentalsb.route('/api/v1/rental/', methods=['GET'])
+@getrentalsb.route('/api/v1/rental', methods=['GET'])
 async def get_rentals() -> Response:
     if 'X-User-Name' not in request.headers.keys():
         return Response(status=400, content_type='application/json', response=json.dumps({'errors': ['wrong user name']}))
